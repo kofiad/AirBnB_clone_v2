@@ -139,7 +139,8 @@ class HBNBCommand(cmd.Cmd):
             else:
                 continue
             kw[key] = value
-        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
+        new_instance = HBNBCommand.classes[arg_list[0]]()
+        new_instance.__dict__.update(kw)
         storage.save()
         print(new_instance.id)
         storage.save()
