@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from utilities import dict_creator
 
 
 class HBNBCommand(cmd.Cmd):
@@ -115,16 +116,33 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        # if not args:
-        #     print("** class name missing **")
-        #     return
-        # elif args not in HBNBCommand.classes:
-        #     print("** class doesn't exist **")
-        #     return
-        # new_instance = HBNBCommand.classes[args]()
-        # storage.save()
-        # print(new_instance.id)
-        # storage.save()
+        if not args:
+            print("** class name missing **")
+            return
+        arg_list = args.split()
+        class_name = arg_list[0]
+        if class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        kw = {}
+        for arg in arg_list[1:]:
+            key, value = arg.split("=")
+            if value.startswith('"'):
+                value = value.strip('"').replace("_", " ").replace('\\"', '"')
+            elif '.' in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            elif value.isdigit():
+                value = int(value)
+            else:
+                continue
+            kw[key] = value
+        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
+        storage.save()
+        print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
