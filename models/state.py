@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 """This is the state class"""
-import shlex
 from sqlalchemy.ext.declarative import declarative_base
+from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String
-from models.base_model import BaseModel, Base
 import models
 from models.city import City
+import shlex
 
 
 class State(BaseModel, Base):
